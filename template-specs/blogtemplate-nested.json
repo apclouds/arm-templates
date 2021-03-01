@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+        "type": "Microsoft.Resources/templateSpecs",
+        "apiVersion": "2019-06-01-preview",
+        "name": "webAppSpec",
+        "location": "eastus",
+        "properties": {},
+        "tags": {},
+        "resources": [
+          {
+            "type": "versions",
+            "apiVersion": "2019-06-01-preview",
+            "name": "1.0",
+            "location": "eastus",
+            "dependsOn": [ "webAppSpec" ],
+            "properties": {
+              "artifacts": [],
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {},
+                "resources": [
+                  {
+                    "type": "Microsoft.Storage/storageAccounts",
+                    "apiVersion": "2019-04-01",
+                    "name": "[concat('storageacc', uniquestring(resourceGroup().id))]",
+                    "location": "eastus",
+                    "sku": {
+                      "name": "Standard_LRS"
+                    },
+                    "kind": "StorageV2",
+                    "properties": {}
+                  }
+                ],
+                "outputs": {}
+              }
+            },
+            "tags": {}
+          }
+        ]
+      }],
+    "outputs": {}
+}

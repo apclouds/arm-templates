@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/templateSpecs",
+            "apiVersion": "2019-06-01-preview",
+            "name": "PreProdSpec-Relative",
+            "location": "eastus",
+            "properties": {},
+            "tags": {},
+            "resources": [
+                {
+                    "type": "versions",
+                    "apiVersion": "2019-06-01-preview",
+                    "name": "1.0",
+                    "location": "eastus",
+                    "dependsOn": ["[resourceId('Microsoft.Resources/templateSpecs', 'PreProdSpec-Relative')]"],
+                    "properties": {
+                        "template": {
+                            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                            "contentVersion": "1.0.0.0",
+                            "parameters": {},
+                            "resources": [
+                                {
+                                    "type": "Microsoft.Resources/deployments",
+                                    "apiVersion": "2020-06-01",
+                                    "name": "networkingDeployment",
+                                    "properties": {
+                                        "mode": "Incremental",
+                                        "templateLink": {
+                                            "relativePath": "template-specs/networkTemplate.json"
+                                        }
+                                    },
+                                    "dependsOn": [
+                                        "[resourceId('Microsoft.Resources/templateSpecs', 'PreProdSpec-Relative')]"
+                                    ]
+                                },
+                                {
+                                    "type": "Microsoft.Resources/deployments",
+                                    "apiVersion": "2020-06-01",
+                                    "name": "storageDeployment",
+                                    "properties": {
+                                        "mode": "Incremental",
+                                        "templateLink": {
+                                            "relativePath": "template-specs/storageTemplate.json"
+                                        }
+                                    },
+                                    "dependsOn": [
+                                        "[resourceId('Microsoft.Resources/templateSpecs', 'PreProdSpec-Relative')]"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+    }],    
+    "outputs": {}
+}

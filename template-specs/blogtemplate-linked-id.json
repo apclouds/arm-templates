@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/templateSpecs",
+            "apiVersion": "2019-06-01-preview",
+            "name": "PreProdSpec",
+            "location": "eastus",
+            "properties": {},
+            "tags": {},
+            "resources": [
+                {
+                    "type": "Microsoft.Resources/deployments",
+                    "apiVersion": "2020-06-01",
+                    "name": "networkingDeployment",
+                    "properties": {
+                        "mode": "Incremental",
+                        "templateLink": {
+                        "id": "[resourceId('apclouds-PreProd', 'Microsoft.Resources/templateSpecs/versions', 'networkSpec', '1.0')]"
+                        }
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Resources/templateSpecs', 'PreProdSpec')]"
+                    ]
+                },
+                {
+                    "type": "Microsoft.Resources/deployments",
+                    "apiVersion": "2020-06-01",
+                    "name": "storageDeployment",
+                    "properties": {
+                        "mode": "Incremental",
+                        "templateLink": {
+                        "id": "[resourceId('apclouds-PreProd', 'Microsoft.Resources/templateSpecs/versions', 'storageSpec', '1.0')]"
+                        }
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Resources/templateSpecs', 'PreProdSpec')]"
+                    ]
+                }
+            ]
+    }],    
+    "outputs": {}
+}
