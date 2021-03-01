@@ -120,16 +120,13 @@ resource mysqlServer 'Microsoft.DBforMySQL/servers@2017-12-01' = {
         }
         sslEnforcement: 'Disabled'
     }
-    resources: [ 
-        {
-            type: 'firwallrules'
-            apiVersion: '2017-12-01'
-            name: 'AllowAzureIPs'
-            location: location
-            properties: {
-                startIpAddress: '0.0.0.0'
-                endIpAddress: '0.0.0.0'
-            }
-        }
-    ]
+}
+
+resource firewallRule 'Microsoft.DBforMySQL/servers/firewallRules@2017-12-01' = {
+    name: '${mysqlServer.name}/AllowAzureIPs'
+    location: location
+    properties: {
+        startIpAddress: '0.0.0.0'
+        endIpAddress: '0.0.0.0'
+    }
 }
